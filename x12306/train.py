@@ -13,6 +13,7 @@ import time
 import re
 import requests
 import prettytable as pt
+import csv
 
 from .settings import settings
 from .utils import colorize
@@ -148,6 +149,13 @@ class TrainTable:
         for train in self.trains_list:
             tb.add_row(train.row)
         print(tb)
+        if settings.csv_file:  
+            with open(settings.csv_file, mode='w+', encoding='utf-8', newline='') as file:
+                csv_writer = csv.writer(file)
+                for train in self.trains_list:
+                    csv_writer.writerow(train.row)
+            print("已写入",settings.csv_file)
+
 
     def cleanup(self):
         """处理trains_list，排序和删除无效数据"""
